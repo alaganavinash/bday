@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Puzzle</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Parisienne&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+<canvas id="petals"></canvas>
+
+<main class="puzzle" id="puzzleMain">
+  <div class="puzzle__card">
+    <p class="section__eyebrow">before you go further</p>
+    <h1 class="puzzle__title">Solve This First</h1>
+    <p class="puzzle__question" id="puzzleQuestion"></p>
+
+    <form class="puzzle__form" id="puzzleForm">
+      <input
+        class="puzzle__input"
+        id="puzzleInput"
+        type="number"
+        inputmode="numeric"
+        placeholder="Your answer"
+        autocomplete="off"
+        required
+      >
+      <button class="btn-celebrate" type="submit">Check</button>
+    </form>
+
+    <p class="puzzle__feedback" id="puzzleFeedback" hidden></p>
+    <button class="puzzle__hint-btn" id="hintBtn" type="button">Need a hint?</button>
+    <p class="puzzle__hint" id="puzzleHint" hidden></p>
+  </div>
+</main>
+
+<div class="puzzle__success" id="puzzleSuccess" hidden>
+  <div class="puzzle__success-number" id="successNumber"></div>
+  <p class="puzzle__success-label" id="successLabel"></p>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/effects.js"></script>
+<script src="js/puzzle.js"></script>
+</body>
+</html>

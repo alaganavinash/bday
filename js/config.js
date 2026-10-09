@@ -38,5 +38,16 @@ const SITE = {
     { from: "Someone who's known you forever", text: "Remember when we thought we had it all figured out? We were wrong, and it was better this way." },
     { from: "Your sibling", text: "Still the most annoying person I love most. Happy birthday, brat." },
     { from: "A friend from far away", text: "Different time zone, same love. Wishing I could be there to celebrate in person." }
-  ]
+  ],
+
+  // The puzzle on puzzle.html. "answer" is the correct number, shown big
+  // on the success screen above "successLabel".
+  puzzle: {
+    question: "Double me, then take away 2, and you're left with 6. What number am I?",
+    hint: "Work backwards: add 2 to 6, then undo the doubling.",
+    answer: 4,
+    successEyebrow: "You are correct",
+    successLabel: "Days to Go",
+    wrongMessage: "Not quite — give it another go."
+  }
 };
