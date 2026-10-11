@@ -558,19 +558,22 @@ body {
 }
 
 .puzzle__success-number,
-.puzzle__success-label {
+.puzzle__success-label,
+.puzzle__success-days {
   opacity: 0;
   transform: translateY(14px);
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .puzzle__success.in-view .puzzle__success-number,
-.puzzle__success.in-view .puzzle__success-label {
+.puzzle__success.in-view .puzzle__success-label,
+.puzzle__success.in-view .puzzle__success-days {
   opacity: 1;
   transform: translateY(0);
 }
 
 .puzzle__success.in-view .puzzle__success-number { transition-delay: 0.2s; }
+.puzzle__success.in-view .puzzle__success-days { transition-delay: 0.6s; }
 
 .puzzle__success-number {
   font-family: "Parisienne", var(--serif);
@@ -586,4 +589,12 @@ body {
   letter-spacing: 0.02em;
   color: var(--rose);
   margin: 0;
+}
+
+.puzzle__success-days {
+  font-family: "Parisienne", var(--serif);
+  font-size: clamp(1.6rem, 5vw, 2.25rem);
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  margin: 1.2rem 0 0;
 }

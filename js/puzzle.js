@@ -17,6 +17,10 @@
 
     document.getElementById("successIntro").textContent = puzzle.revealIntro;
     document.getElementById("successAnswer").textContent = puzzle.revealAnswer;
+
+    const daysLeft = Math.max(0, Math.floor((new Date(SITE.birthdayDate).getTime() - Date.now()) / 86400000));
+    document.getElementById("successDays").textContent = daysLeft + " Days to Go";
+
     successEl.hidden = false;
 
     // Two rAFs so the browser commits the "hidden" removal first, then
