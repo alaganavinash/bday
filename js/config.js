@@ -40,14 +40,11 @@ const SITE = {
     { from: "A friend from far away", text: "Different time zone, same love. Wishing I could be there to celebrate in person." }
   ],
 
-  // The puzzle on puzzle.html. "answer" is the correct number, shown big
-  // on the success screen above "successLabel".
+  // The question + reveal on puzzle.html.
   puzzle: {
-    question: "Double me, then take away 2, and you're left with 6. What number am I?",
-    hint: "Work backwards: add 2 to 6, then undo the doubling.",
-    answer: 4,
-    successEyebrow: "You are correct",
-    successLabel: "Days to Go",
-    wrongMessage: "Not quite — give it another go."
+    question: "Are you today?",
+    buttonLabel: "Why?",
+    revealIntro: "Because you are",
+    revealAnswer: "12/10"
   }
 };
