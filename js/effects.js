@@ -35,7 +35,12 @@
 
   function initPetals() {
     const count = window.innerWidth < 640 ? 14 : 24;
-    petals = Array.from({ length: count }, makePetal);
+    petals = Array.from({ length: count }, function () {
+      const p = makePetal();
+      // Still petals (reduced motion) need to start on screen to be catchable.
+      if (prefersReducedMotion) p.y = Math.random() * window.innerHeight;
+      return p;
+    });
   }
 
   function drawPetal(p) {
@@ -91,8 +96,8 @@
   function animate() {
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-    if (!prefersReducedMotion) {
-      petals.forEach(function (p) {
+    petals.forEach(function (p) {
+      if (!prefersReducedMotion) {
         p.y += p.speed;
         p.x += p.drift;
         p.rotation += p.rotSpeed;
@@ -100,9 +105,9 @@
           p.y = -20;
           p.x = Math.random() * window.innerWidth;
         }
-        drawPetal(p);
-      });
-    }
+      }
+      drawPetal(p);
+    });
 
     if (confettiPieces.length) {
       confettiPieces = confettiPieces.filter(function (p) {
@@ -123,67 +128,45 @@
   }
 
   resize();
-  if (!prefersReducedMotion) initPetals();
+  initPetals();
   animate();
   window.addEventListener("resize", function () {
     resize();
-    if (!prefersReducedMotion) initPetals();
+    initPetals();
   });
 
-  // ---------- Hidden game: pop the falling petals ----------
+  // ---------- Secret: catch ten falling petals ----------
   // The canvas itself stays pointer-events:none (so it never blocks clicks
   // on real buttons/links); instead we hit-test clicks anywhere on the page
   // against the current petal positions, which is purely additive.
-  if (!prefersReducedMotion) {
-    const POP_RADIUS = 26;
-    const MILESTONE = 10;
-    let popCount = 0;
+  const POP_RADIUS = 30;
+  const GOAL = 10;
+  let popCount = 0;
 
-    const scoreEl = document.createElement("div");
-    scoreEl.className = "petal-score";
-    scoreEl.innerHTML = '<i class="fa-solid fa-heart"></i> <span id="petalScoreNum">0</span>';
-    scoreEl.hidden = true;
-    document.body.appendChild(scoreEl);
+  const scoreEl = document.createElement("div");
+  scoreEl.className = "petal-score";
+  scoreEl.innerHTML = '<i class="fa-solid fa-heart"></i> <span id="petalScoreNum">0</span>';
+  scoreEl.hidden = true;
+  document.body.appendChild(scoreEl);
 
-    const toastEl = document.createElement("div");
-    toastEl.className = "petal-toast";
-    toastEl.hidden = true;
-    document.body.appendChild(toastEl);
+  document.addEventListener("click", function (e) {
+    for (let i = 0; i < petals.length; i++) {
+      const p = petals[i];
+      const dx = e.clientX - p.x;
+      const dy = e.clientY - p.y;
+      if (dx * dx + dy * dy <= POP_RADIUS * POP_RADIUS) {
+        spawnConfetti(p.x, p.y, 16);
+        petals[i] = makePetal();
+        petals[i].y = prefersReducedMotion ? Math.random() * window.innerHeight : -20;
 
-    function showToast(text) {
-      toastEl.textContent = text;
-      toastEl.hidden = false;
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () { toastEl.classList.add("in-view"); });
-      });
-      setTimeout(function () {
-        toastEl.classList.remove("in-view");
-        setTimeout(function () { toastEl.hidden = true; }, 600);
-      }, 3200);
-    }
+        popCount++;
+        scoreEl.hidden = false;
+        document.getElementById("petalScoreNum").textContent =
+          popCount < GOAL ? popCount + "/" + GOAL : popCount;
 
-    document.addEventListener("click", function (e) {
-      for (let i = 0; i < petals.length; i++) {
-        const p = petals[i];
-        const dx = e.clientX - p.x;
-        const dy = e.clientY - p.y;
-        if (dx * dx + dy * dy <= POP_RADIUS * POP_RADIUS) {
-          spawnConfetti(p.x, p.y, 16);
-          petals[i] = makePetal();
-          petals[i].y = -20;
-
-          popCount++;
-          scoreEl.hidden = false;
-          document.getElementById("petalScoreNum").textContent = popCount;
-
-          if (popCount === MILESTONE) {
-            spawnConfetti(window.innerWidth / 2, window.innerHeight * 0.3, 160);
-            const name = typeof SITE !== "undefined" && SITE.name ? SITE.name : "you";
-            showToast("You found them all, " + name + ". Happy birthday. 🤍");
-          }
-          break;
-        }
+        if (popCount === GOAL && window.EGGS) EGGS.find("petals");
+        break;
       }
-    });
-  }
+    }
+  });
 })();

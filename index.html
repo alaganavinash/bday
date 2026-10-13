@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&family=Dancing+Script:wght@400;500;600&family=Parisienne&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
@@ -15,16 +15,9 @@
 <canvas id="petals"></canvas>
 
 <header class="hero">
-  <nav class="nav">
-    <!-- <span class="nav__brand">a little celebration</span> -->
-    <div class="nav__links">
-      <a href="#gallery">Memories</a>
-    </div>
-  </nav>
-
   <div class="hero__content">
     <p class="hero__eyebrow">counting down to</p>
-    <h1 class="hero__name" id="heroName">Someone Wonderful</h1>
+    <h1 class="hero__name" id="heroName"></h1>
     <p class="hero__tagline" id="heroTagline">A small corner of the internet, made just for you.</p>
 
     <div class="countdown" id="countdown">
@@ -48,19 +41,39 @@
     <p class="countdown__arrived" id="arrivedText" hidden></p>
 
     <button class="btn-celebrate" id="celebrateBtn">Celebrate ✨</button>
+
+    <p class="hero__hunt">
+      <span><strong id="huntTotal">8</strong> secrets are hidden on this site.</span>
+      <span>Find them all to break the seal on your letter.</span>
+    </p>
   </div>
 
-  <a class="scroll-hint" href="#letter">
+  <a class="scroll-hint" href="#cake" aria-label="Scroll down">
     <span></span>
   </a>
 </header>
 
 <main>
-  <section class="letter" id="letter">
-    <div class="letter__card">
-      <p class="letter__kicker">a letter for you</p>
-      <p class="letter__body" id="letterBody"></p>
-      <p class="letter__sign" id="letterSign"></p>
+  <section class="cake-section" id="cake">
+    <div class="section__header">
+      <p class="section__eyebrow">first things first</p>
+      <h2 class="section__title">Make a Wish</h2>
+      <p class="section__sub">Tap the flames to blow them out.</p>
+    </div>
+
+    <div class="cake">
+      <div class="cake__candles" id="candles"></div>
+      <div class="cake__body"></div>
+      <div class="cake__plate"></div>
+      <button class="hidden-egg" id="hiddenEgg" type="button" aria-label="A tiny egg">
+        <svg viewBox="0 0 24 30" aria-hidden="true"><path d="M12 1.5C6.5 1.5 2.5 11 2.5 18.5a9.5 9.5 0 0 0 19 0C21.5 11 17.5 1.5 12 1.5z"/></svg>
+      </button>
+    </div>
+
+    <p class="cake__msg" id="wishMsg" aria-live="polite"></p>
+    <div class="cake__actions">
+      <button class="btn-ghost" id="micBtn" type="button"><i class="fa-solid fa-microphone"></i> <span>Blow at your mic</span></button>
+      <button class="btn-ghost" id="relightBtn" type="button" hidden><i class="fa-solid fa-fire"></i> Relight</button>
     </div>
   </section>
 
@@ -68,14 +81,82 @@
     <div class="section__header">
       <p class="section__eyebrow">a few favorites</p>
       <h2 class="section__title">Memories Worth Keeping</h2>
+      <p class="section__sub">Tap a card to flip it over.</p>
     </div>
     <div class="gallery__grid" id="galleryGrid"></div>
+  </section>
+
+  <section class="scratch-section">
+    <div class="section__header">
+      <p class="section__eyebrow">feeling lucky?</p>
+      <h2 class="section__title">A Little Something</h2>
+      <p class="section__sub">Scratch away the gold.</p>
+    </div>
+    <div class="scratch">
+      <div class="scratch__prize">
+        <p class="scratch__kicker" id="scratchKicker"></p>
+        <p class="scratch__msg" id="scratchMsg"></p>
+      </div>
+      <canvas id="scratchCanvas" aria-label="Scratch card"></canvas>
+    </div>
+  </section>
+
+  <section class="vault-section">
+    <div class="section__header">
+      <p class="section__eyebrow">locked tight</p>
+      <h2 class="section__title">The Vault</h2>
+      <p class="section__sub">You already know the code. You just don't know you know it.</p>
+    </div>
+    <div class="vault" id="vault">
+      <div class="vault__door" id="vaultDoor">
+        <div class="vault__display" id="vaultDisplay"></div>
+        <p class="vault__status" id="vaultStatus" aria-live="polite"></p>
+        <div class="vault__keys" id="vaultKeys"></div>
+      </div>
+      <div class="vault__inside" id="vaultInside" hidden>
+        <i class="fa-solid fa-gem"></i>
+        <p id="vaultMessage"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="match-section">
+    <div class="section__header">
+      <p class="section__eyebrow">memory game</p>
+      <h2 class="section__title">Perfect Match</h2>
+      <p class="section__sub">Flip two cards at a time and find every pair.</p>
+    </div>
+    <div class="match" id="matchGrid"></div>
+    <p class="match__status" id="matchStatus" aria-live="polite"></p>
+    <div class="match__actions" id="matchActions"></div>
+  </section>
+
+  <section class="letter" id="letter">
+    <div class="section__header">
+      <p class="section__eyebrow">last of all</p>
+      <h2 class="section__title">A Letter for You</h2>
+    </div>
+
+    <div class="envelope" id="envelope">
+      <div class="envelope__flap"></div>
+      <button class="seal" id="seal" type="button">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="seal__track" cx="50" cy="50" r="46"/>
+          <circle class="seal__progress" id="sealRing" cx="50" cy="50" r="46"/>
+        </svg>
+        <span class="seal__count" id="sealCount"></span>
+      </button>
+    </div>
+    <p class="envelope__note" id="envelopeNote"></p>
+
+    <button class="btn-celebrate" id="letterAgain" type="button" hidden>
+      <i class="fa-solid fa-envelope-open"></i> Read your letter again
+    </button>
   </section>
 </main>
 
 <footer class="footer">
   <p>With care, somewhere between a browser tab and a heart.</p>
-  <p><a href="puzzle.html" class="footer__link">One more thing before you go &rarr;</a></p>
 </footer>
 
 <div class="lightbox" id="lightbox">
@@ -84,12 +165,25 @@
   <p class="lightbox__caption" id="lightboxCaption"></p>
 </div>
 
+<div class="letter-modal" id="letterModal" role="dialog" aria-modal="true" aria-labelledby="letterTitle" hidden>
+  <div class="letter-modal__sheet">
+    <div class="letter-modal__paper" id="letterPaper">
+      <button class="letter-modal__close" id="letterClose" type="button" aria-label="Close letter">&times;</button>
+      <p class="letter__kicker">a letter for you</p>
+      <h3 class="letter-modal__title" id="letterTitle"></h3>
+      <div class="letter-modal__body" id="letterBody"></div>
+      <p class="letter__sign" id="letterSign"></p>
+    </div>
+  </div>
+</div>
+
 <div class="arrival" id="arrivalOverlay" hidden>
   <p class="arrival__eyebrow">it's here</p>
   <h2 class="arrival__title">Happy Birthday<br><span id="arrivalName"></span></h2>
 </div>
 
 <script src="js/config.js"></script>
+<script src="js/eggs.js"></script>
 <script src="js/effects.js"></script>
 <script src="js/script.js"></script>
 </body>
