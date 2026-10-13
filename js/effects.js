@@ -52,10 +52,11 @@
 
   const confettiColors = ["#a8576e", "#c7974f", "#7d3a4f", "#e7b7c3", "#f2d9a8"];
 
-  function spawnConfetti(originX, originY) {
+  function spawnConfetti(originX, originY, count) {
     const x = typeof originX === "number" ? originX : window.innerWidth / 2;
     const y = typeof originY === "number" ? originY : 0;
-    for (let i = 0; i < 160; i++) {
+    const total = typeof count === "number" ? count : 160;
+    for (let i = 0; i < total; i++) {
       // Bias angles upward (into the top half of the circle) so the burst
       // reads as exploding above the origin point, not spilling below it.
       const angle = Math.PI + Math.random() * Math.PI;
@@ -128,4 +129,61 @@
     resize();
     if (!prefersReducedMotion) initPetals();
   });
+
+  // ---------- Hidden game: pop the falling petals ----------
+  // The canvas itself stays pointer-events:none (so it never blocks clicks
+  // on real buttons/links); instead we hit-test clicks anywhere on the page
+  // against the current petal positions, which is purely additive.
+  if (!prefersReducedMotion) {
+    const POP_RADIUS = 26;
+    const MILESTONE = 10;
+    let popCount = 0;
+
+    const scoreEl = document.createElement("div");
+    scoreEl.className = "petal-score";
+    scoreEl.innerHTML = '<i class="fa-solid fa-heart"></i> <span id="petalScoreNum">0</span>';
+    scoreEl.hidden = true;
+    document.body.appendChild(scoreEl);
+
+    const toastEl = document.createElement("div");
+    toastEl.className = "petal-toast";
+    toastEl.hidden = true;
+    document.body.appendChild(toastEl);
+
+    function showToast(text) {
+      toastEl.textContent = text;
+      toastEl.hidden = false;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { toastEl.classList.add("in-view"); });
+      });
+      setTimeout(function () {
+        toastEl.classList.remove("in-view");
+        setTimeout(function () { toastEl.hidden = true; }, 600);
+      }, 3200);
+    }
+
+    document.addEventListener("click", function (e) {
+      for (let i = 0; i < petals.length; i++) {
+        const p = petals[i];
+        const dx = e.clientX - p.x;
+        const dy = e.clientY - p.y;
+        if (dx * dx + dy * dy <= POP_RADIUS * POP_RADIUS) {
+          spawnConfetti(p.x, p.y, 16);
+          petals[i] = makePetal();
+          petals[i].y = -20;
+
+          popCount++;
+          scoreEl.hidden = false;
+          document.getElementById("petalScoreNum").textContent = popCount;
+
+          if (popCount === MILESTONE) {
+            spawnConfetti(window.innerWidth / 2, window.innerHeight * 0.3, 160);
+            const name = typeof SITE !== "undefined" && SITE.name ? SITE.name : "you";
+            showToast("You found them all, " + name + ". Happy birthday. 🤍");
+          }
+          break;
+        }
+      }
+    });
+  }
 })();

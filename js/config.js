@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------
 const SITE = {
   // Your friend's name
-  name: "Someone Wonderful",
+  name: "Inthuja",
 
   // Short line under the name on the first screen
   tagline: "A small corner of the internet, made just for you.",

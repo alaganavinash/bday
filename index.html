@@ -17,6 +17,9 @@
 <header class="hero">
   <nav class="nav">
     <!-- <span class="nav__brand">a little celebration</span> -->
+    <div class="nav__links">
+      <a href="#gallery">Memories</a>
+    </div>
   </nav>
 
   <div class="hero__content">
@@ -42,7 +45,7 @@
         <span class="countdown__label">secs</span>
       </div>
     </div>
-    <p class="countdown__arrived" id="arrivedText" hidden>It's finally here. Happy birthday! 🎉</p>
+    <p class="countdown__arrived" id="arrivedText" hidden></p>
 
     <button class="btn-celebrate" id="celebrateBtn">Celebrate ✨</button>
   </div>
@@ -60,12 +63,31 @@
       <p class="letter__sign" id="letterSign"></p>
     </div>
   </section>
+
+  <section class="gallery" id="gallery">
+    <div class="section__header">
+      <p class="section__eyebrow">a few favorites</p>
+      <h2 class="section__title">Memories Worth Keeping</h2>
+    </div>
+    <div class="gallery__grid" id="galleryGrid"></div>
+  </section>
 </main>
 
 <footer class="footer">
   <p>With care, somewhere between a browser tab and a heart.</p>
   <p><a href="puzzle.html" class="footer__link">One more thing before you go &rarr;</a></p>
 </footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
+  <img class="lightbox__img" id="lightboxImg" alt="">
+  <p class="lightbox__caption" id="lightboxCaption"></p>
+</div>
+
+<div class="arrival" id="arrivalOverlay" hidden>
+  <p class="arrival__eyebrow">it's here</p>
+  <h2 class="arrival__title">Happy Birthday<br><span id="arrivalName"></span></h2>
+</div>
 
 <script src="js/config.js"></script>
 <script src="js/effects.js"></script>
